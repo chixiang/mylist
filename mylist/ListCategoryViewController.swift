@@ -30,14 +30,8 @@ class ListCategoryViewController: UITableViewController, listCategoryDetailDeleg
     }
 
     // MARK: - Table view data source
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listCategories.count
-    }
-    
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        let listCategory = listCategories[indexPath.row]
-        performSegue(withIdentifier: "showLists", sender: listCategory)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -54,6 +48,7 @@ class ListCategoryViewController: UITableViewController, listCategoryDetailDeleg
         return cell!
     }
 
+    // MARK: - 跳转
     // 通过编码实现跳转
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let navigationController = storyboard!.instantiateViewController(withIdentifier: "listCategoryDetailNavigationController") as! UINavigationController
@@ -65,6 +60,11 @@ class ListCategoryViewController: UITableViewController, listCategoryDetailDeleg
         present(navigationController, animated: true, completion: nil)
     }
     
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        let listCategory = listCategories[indexPath.row]
+        performSegue(withIdentifier: "showLists", sender: listCategory)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showLists" {
             let allListVC = segue.destination as! AllListViewController
@@ -76,6 +76,7 @@ class ListCategoryViewController: UITableViewController, listCategoryDetailDeleg
         }
     }
     
+    // MARK: - delegate
     func listCategoryDetailViewController(sender: ListCategoryDetailViewController, didFinishAddListCategory listCategory: ListCategory) {
         listCategories.append(listCategory)
         let indexPath = NSIndexPath(row: listCategories.count - 1, section: 0)
